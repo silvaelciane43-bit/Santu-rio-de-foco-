@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Santuário de Hiperfoco - Ane ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f1c40f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+</head>
+<body class="modo-galaxia modo-lua">
+
+    <div class="header-magico">
+        <div class="status-moedas">
+            🪙 Moedas: <span id="moedas-contagem">0</span>
+        </div>
+        <div class="area-prova-real">
+            <label for="foto-prova" class="btn-prova">📸 Enviar Prova Real (+50)</label>
+            <input type="file" id="foto-prova" onchange="validarFoto()" style="display:none">
+        </div>
+    </div>
+
+    <main class="painel-imersivo">
+        <div class="card-glass">
+            <h1 class="titulo-foco">Vamos Focar Agora 🔮</h1>
+
+            <div class="seletores-fundo">
+                <button class="btn-fundo galaxia" onclick="mudarAmbiente('galaxia')">🌌 Galáxia</button>
+                <button class="btn-fundo mata" onclick="mudarAmbiente('mata')">🌿 Mata</button>
+                <button class="btn-fundo lua" onclick="mudarTema('lua')">🌙 Lua</button>
+                <button class="btn-fundo sol" onclick="mudarTema('sol')">☀️ Sol</button>
+            </div>
+
+            <div class="conteudo-principal">
+                <div class="col-acao">
+                    <input type="text" id="tarefa" placeholder="Sua missão agora...">
+                    <input type="number" id="minutos" placeholder="Minutos">
+                    <div id="timer" class="cronometro-brilhante">25:00</div>
+                    <button class="btn-iniciar" onclick="ativarHiperfoco()">INICIAR MISSÃO</button>
+                    <div class="barra-foco-container"><div id="barra-progresso"></div></div>
+                    
+                    <div class="mural-missões">
+                        <h3 class="subtitulo">Mural de Missões 🎯</h3>
+                        <div class="input-meta">
+                            <input type="text" id="nova-meta" placeholder="Adicionar tarefa...">
+                            <button onclick="adicionarMeta()">+</button>
+                        </div>
+                        <ul id="lista-metas"></ul>
+                    </div>
+                </div>
+
+                <div class="col-progresso">
+                    <h3 class="subtitulo">Santuário de Guias</h3>
+                    <div class="grid-mascotes">
+                        <div class="animal-wrapper" id="guia-onca"><div class="circle-animal">🐆</div><span>Onça</span></div>
+                        <div class="animal-wrapper" id="guia-escorpiao"><div class="circle-animal">🦂</div><span>Escorpião</span></div>
+                        <div class="animal-wrapper" id="guia-gato"><div class="circle-animal">🐈‍⬛</div><span>Gato</span></div>
+                        <div class="animal-wrapper" id="guia-cabra"><div class="circle-animal">🐐</div><span>Cabra</span></div>
+                        <div class="animal-wrapper" id="guia-calopsita"><div class="circle-animal">🦜</div><span>Calopsita</span></div>
+                    </div>
+
+                    <h3 class="subtitulo">Calendário de Vitórias</h3>
+                    <div id="calendario" class="grid-calendario-pequeno"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
