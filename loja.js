@@ -1,7 +1,3 @@
-/* ==========================================
-   SISTEMA DE ECONOMIA DO SANTUÁRIO
-   ========================================== */
-
 const ITENS = [
     { id: 'armadura_bronze', nome: 'Peitoral de Bronze', preco: 500, img: 'armadura_bronze.png', nivelMin: 1 },
     { id: 'oculos_foco', nome: 'Óculos de Foco', preco: 30, img: 'oculos_foco.png', nivelMin: 1 },
