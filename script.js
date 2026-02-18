@@ -5,8 +5,12 @@ let intervalo;
 const precos = { 'guia-onca': 500, 'guia-escorpiao': 1000, 'guia-gato': 1500, 'guia-cabra': 2000, 'guia-calopsita': 2500 };
 
 window.onload = () => {
+    verificarnomeUsuario();
+    definirfrasedodia();
     atualizarDisplay();
     gerarCalendario();
+    atualizarstatusHome();
+    setInterval(atualizarstatusHome,2000)
     animais.forEach(id => document.getElementById(id)?.classList.add('desbloqueado'));
 };
 
@@ -153,4 +157,31 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
     .then(() => console.log("Santuário pronto para instalação!"))
     .catch(err => console.log("Erro no registro:", err));
+}
+
+function atualizarStatusHome() {
+    // ... (mantenha o código de moedas e nível)
+const barra= document.getElementById('energia-fill');
+    const corpo = document.getElementById('camada-corpo');
+    if(barra){
+        const nivel = Math.max(0,Math.min(100,user.energia));
+        barra.style.width = nivel+ "%";
+    
+
+    if (corpo) {
+        // Lógica para as 5 opções que você mencionou:
+        if (user.energia < 20) {
+            corpo.src = "IMG/imc_baixo.png"; // Se a energia estiver baixa
+        } else if (user.nivel >= 30) {
+            corpo.src = "IMG/estagio_4.png";
+        } else if (user.nivel >= 20) {
+            corpo.src = "IMG/estagio_3.png";
+        } else if (user.nivel >= 10) {
+            corpo.src = "IMG/estagio_2.png";
+        } else {
+            corpo.src = "IMG/estagio_1.png"; // O gatinho inicial
+        }
+    }
+}
+
 }

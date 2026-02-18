@@ -3,7 +3,10 @@
     margin: 0%;
     background-color: aqua;
     text-align: center;
+    box-sizing: border-box;
+    font-family: 'poppins', sans-serif;
     fill: #f1c4f1
+    
    
 }
 .body {
@@ -15,4 +18,152 @@
     overflow-x: hidden;
     background-image: url(https://images.unsplash.com/photo-1464802686167-b939a6910659?w=800);
 
+}
+.modo-galaxia{
+    background: radial-gradient(circle at top right, #1a1a2e, #16213e, #0f3460);
+    min-height: 100vh;
+}
+.app-container{
+    padding: 20px;
+    padding-bottom: 100px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.card-glass{
+    background: rgba(255,255,255, 0.1);
+    backdrop-filter : blue(10px);
+    border : 1px solid rgba(255, 255,255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.status-enegia{
+    margin-top: 10px;
+}
+.bar{
+    width: 100%;
+    height: 14px;
+    background: rgba(255,255,255, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 255,255, 0.5);
+
+}
+.fill{
+    height: 100%;
+    width: 100%;
+    background-color: #4ae3b5;
+    transition: width 0.8s  cubic-bezier ( 0.4, 0, 0.2, 1);
+    background-color: 0.5s ;
+}
+
+.container-avatar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.avatar-camadas{
+    position: relative;
+    width: 250px;
+    height: 350px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-avatar{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    bottom: 0;
+    transition: all 0.3s ease;
+}
+
+.balao-frase{
+    width: 100%;
+    min-height: 60px;
+}
+
+.grid-calendario{
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.dia-calendario{
+    position: relative;
+    height: 45px;
+    background-color: rgba(255,255,255, 0.5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    transition: tranform 0.2s;
+}
+
+.dia-atual{
+    border: 2px solid #4ae3b5;
+    color: #4ae3b5;
+    background-color: rgba(74, 227,181, 0.1);
+}
+
+.dia-concluido{
+    background: rgba(255, 215,0,0.1);
+    border: 1px solid rgba(255, 215,0, 0.3);
+}
+
+.x-dourado{
+    position: absolute;
+    color: #ffd700;
+    font-size: 1.6rem;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(255,215, 0, 0.5);
+    transform: rotate(-12deg);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.tab-bar{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: rgba(15,20,30, 0.95);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255, 0.1);
+    z-index: 100;
+}
+
+.tab-item{
+    text-decoration: none;
+    color: rgba(255,255, 255, 0.5);
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.tab-item.active{
+    color: #4ae3b5;
+    transform: translate(-5px);
+}
+
+.tab-item:hover{
+    color:white;
 }
