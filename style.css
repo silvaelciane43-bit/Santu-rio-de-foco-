@@ -42,6 +42,14 @@
 .status-enegia{
     margin-top: 10px;
 }
+
+.card-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+}
 .bar{
     width: 100%;
     height: 14px;
@@ -97,6 +105,17 @@
     grid-template-columns: repeat(7,1fr);
     gap: 10px;
     margin-top: 15px;
+    padding: 10px;
+}
+
+.dia{
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:rgba(255, 255,255,0.1);
+    border-radius: 5px;
+    font-size: 0.9rem;
 }
 
 .dia-calendario{
@@ -166,4 +185,32 @@
 
 .tab-item:hover{
     color:white;
+}
+.barra-progresso-container {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.barra-agua {
+    height: 100%;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    transition: width 0.5s ease;
+}
+
+.btn-nutri {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-nutri:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
