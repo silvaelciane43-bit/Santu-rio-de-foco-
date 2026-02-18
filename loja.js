@@ -4,14 +4,15 @@ const ITENS = [
     { id: 'espada_luz', nome: 'Espada de Luz', preco: 1200, img: 'espada_luz.png', nivelMin: 2 }, // Exemplo de item para Nível 2
 ];
 
+let user = {
+    moedas: parseInt(localStorage.getItem('moedas_ane')) || 0,
+    nivel: parseInt(localStorage.getItem('nivel_ane')) || 1,
+    xp: parseInt(localStorage.getItem('xp_ane')) || 0,
+    loja: JSON.parse(localStorage.getItem('loja_ane')) || { itensComprados: [], itemEquipado: "padrao" }
+};
+
 window.onload = () => {
     // Inicialização básica caso o objeto não exista
-    if (!user.loja) {
-        user.loja = { itensComprados: [], itemEquipado: "padrao", acessorioEquipado: "nenhum" };
-    }
-    if (user.xp === undefined) user.xp = 0;
-    if (user.nivel === undefined) user.nivel = 1;
-
     atualizarInterface();
     renderizarItensLoja();
 };

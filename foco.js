@@ -131,29 +131,42 @@ function exibirTempo() {
     document.getElementById('timer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
+// Trecho corrigido da função finalizarFoco no foco.js
 function finalizarFoco(missao) {
     alert("Missão Cumprida, Ane!");
     
-    // Ganhar moedas (conecta com o seu sistema)
     let moedas = parseInt(localStorage.getItem('moedas_ane')) || 0;
     moedas += 20;
     localStorage.setItem('moedas_ane', moedas);
 
-    // 2. Salvar no histórico de missões (para não sumir ao sair da página)
     const hoje = new Date().toLocaleDateString();
+    const agoraHora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
     const historico = JSON.parse(localStorage.getItem('historico_foco_ane')) || [];
     const novaConclusao = { 
         missao: missao, 
         data: hoje, 
-        hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-    }
-    // SALVA PARA O CALENDÁRIO
+        hora: agoraHora
+    };
+    
+    // Salva no histórico geral
+    historico.push(novaConclusao);
+    localStorage.setItem('historico_foco_ane', JSON.stringify(historico));
+
+    // Marcar presença no calendário
     const diasConcluidos = JSON.parse(localStorage.getItem('dias_concluidos_ane')) || [];
     if (!diasConcluidos.includes(hoje)) {
         diasConcluidos.push(hoje);
         localStorage.setItem('dias_concluidos_ane', JSON.stringify(diasConcluidos));
     }
-    };
+
+    renderizarMissaoConcluida(novaConclusao);
+
+    // Resetar botão UI
+    const btn = document.getElementById('btn-foco');
+    btn.innerText = "Iniciar Hiperfoco";
+    btn.style.background = "#f1c40f";
+}
 // 3. Marcar presença para o Calendário
     // Salvamos uma lista de datas que tiveram missões concluídas
     const diasConcluidos = JSON.parse(localStorage.getItem('dias_concluidos_ane')) || [];

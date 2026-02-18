@@ -1,76 +1,85 @@
-let moedas = parseInt(localStorage.getItem('moedas_ane')) || 0;
-let animais = JSON.parse(localStorage.getItem('animais_ane')) || [];
-let intervalo;
+// --- CONFIGURAÇÃO DA HOME (index.js) ---
 
-// Simulação do objeto user (ajuste conforme seu storage.js)
-let user = {
-    energia: parseInt(localStorage.getItem('energia_ane')) || 100,
-    nivel: parseInt(localStorage.getItem('nivel_ane')) || 0
-};
+// 1. Não criamos mais 'user' ou 'moedas' aqui, pois o storage.js já faz isso.
 
-const precos = { 
-    'guia-onca': 500, 
-    'guia-escorpiao': 1000, 
-    'guia-gato': 1500, 
-    'guia-cabra': 2000, 
-    'guia-calopsita': 2500 
-};
-
-// --- ÚNICO WINDOW.ONLOAD ---
-window.onload = () => {
+// Usamos addEventListener para não haver conflito com outros scripts
+window.addEventListener('load', () => {
+    console.log("Santuário carregado! Iniciando componentes...");
+    
+    // Funções de Inicialização
     atualizarDisplay();
-    gerarCalendario();
+    gerarCalendario(); // Força a criação do calendário
     atualizarStatusHome();
     
-    // Iniciar loop de atualização
+    // Iniciar loop de atualização (Energia e Status)
     setInterval(atualizarStatusHome, 2000);
 
-    // Desbloquear animais comprados
+    // Carregar Animais/Guias Desbloqueados
+    const animais = JSON.parse(localStorage.getItem('animais_ane')) || [];
     animais.forEach(id => {
         const el = document.getElementById(id);
         if(el) el.classList.add('desbloqueado');
     });
 
-    // Carregar Metas
-    const metasSalvas = JSON.parse(localStorage.getItem('metas_ane')) || [];
-    metasSalvas.forEach(meta => criarElementoLista(meta));
-};
+    // Carregar Metas na Home
+    const listaMetas = document.getElementById('lista-metas');
+    if (listaMetas) {
+        const metasSalvas = JSON.parse(localStorage.getItem('metas_ane')) || [];
+        listaMetas.innerHTML = ""; // Limpa antes de carregar
+        metasSalvas.forEach(meta => {
+            const texto = meta.texto || meta; // Aceita formato novo e antigo
+            criarElementoLista(texto);
+        });
+    }
+});
 
-function atualizarDisplay() {
-    // Ajustado para os IDs que estão no seu HTML
-    const elMoedas = document.getElementById('moedas-contagem');
-    if(elMoedas) elMoedas.innerText = moedas;
-    
-    localStorage.setItem('moedas_ane', moedas);
-}
-
-// --- FUNÇÕES DE INTERFACE ---
+// --- FUNÇÃO DO CALENDÁRIO ---
 function gerarCalendario() {
     const container = document.getElementById('calendario-container');
-    if(!container) return;
+    if(!container) {
+        console.error("Erro: O elemento 'calendario-container' não existe no HTML!");
+        return;
+    }
 
     const dataAtual = new Date();
     const mes = dataAtual.getMonth();
     const ano = dataAtual.getFullYear();
-    
-    // Pega o último dia do mês atual
     const ultimoDia = new Date(ano, mes + 1, 0).getDate();
     
-    container.innerHTML = ""; // Limpa antes de gerar
+    container.innerHTML = ""; // Garante que começa vazio
+
+    // Busca dias concluídos no histórico do Foco
+    const diasConcluidos = JSON.parse(localStorage.getItem('dias_concluidos_ane')) || [];
 
     for(let i = 1; i <= ultimoDia; i++) {
         const diaElemento = document.createElement('div');
         diaElemento.classList.add('dia');
         diaElemento.innerText = i;
         
+        // Formata a data atual para comparar com o histórico
+        const dataFormatada = new Date(ano, mes, i).toLocaleDateString();
+
+        // Se o dia for HOJE
         if (i === dataAtual.getDate()) {
-            diaElemento.style.backgroundColor = "#4a90e2";
+            diaElemento.style.border = "2px solid #4a90e2";
+            diaElemento.style.fontWeight = "bold";
+        }
+
+        // Se a Ane concluiu missão nesse dia
+        if (diasConcluidos.includes(dataFormatada)) {
+            diaElemento.style.backgroundColor = "#2ecc71"; // Verde sucesso
             diaElemento.style.color = "white";
             diaElemento.style.borderRadius = "50%";
         }
         
         container.appendChild(diaElemento);
     }
+}
+
+// --- ATUALIZAÇÕES DE INTERFACE ---
+function atualizarDisplay() {
+    const elMoedas = document.getElementById('moedas-contagem');
+    if(elMoedas) elMoedas.innerText = user.moedas; // Usa o 'user' do storage.js
 }
 
 function atualizarStatusHome() {
@@ -86,19 +95,43 @@ function atualizarStatusHome() {
     }
 
     if (corpo) {
-        // Lógica de evolução baseada em nível e energia
-        if (user.energia < 20) {
-            corpo.src = "img/imc-baixo-removebg-preview.png"; 
-        } else if (user.nivel >= 30) {
-            corpo.src = "img/copo-normal-cançado-removebg-preview.png";
-        } else if (user.nivel >= 20) {
-            corpo.src = "img/estagio_3.png";
-      
-        }
+    // 1. A prioridade máxima é a falta de energia (independente do nível)
+    if (user.energia <= 10) {
+        corpo.src = "img/imc-baixo-removebg-preview.png"; 
+    } 
+    // 2. Agora verificamos os níveis do MAIOR para o MENOR
+    else if (user.energia >= 90) {
+        corpo.src = "img/copo-normal-feliz-removebg-preview (1).png";
+    } 
+    else if (user.energia >= 80) {
+        corpo.src = "img/se-mexer.png";
+    } 
+    else if (user.energia >= 70) {
+        corpo.src = "img/alongar.png";
+    } 
+    else if (user.energia >= 60) {
+        corpo.src = "img/estudar.png";
+    } 
+    else if (user.energia >= 50) {
+        corpo.src = "img/beba-agua.png";
+    } 
+    else if (user.energia >= 40) {
+        corpo.src = "img/comer.png";
+    } 
+    else if (user.energia >= 30) {
+        corpo.src = "img/dormir.png";
+    } 
+    else if (user.energia >= 20) {
+        corpo.src = "img/copo-normal-cansado-removebg-preview.png";
+    } 
+    // 3. Imagem padrão para quem está abaixo do nível 20
+    else {
+        corpo.src = "img/copo-normal.png"; // Coloque o nome da sua imagem inicial aqui
     }
 }
+}
 
-// --- SISTEMA DE METAS ---
+// --- SISTEMA DE METAS (SIMPLIFICADO) ---
 function adicionarMeta() {
     const input = document.getElementById('nova-meta');
     if(!input || !input.value) return;
@@ -107,7 +140,7 @@ function adicionarMeta() {
     criarElementoLista(val);
 
     const metasAtuais = JSON.parse(localStorage.getItem('metas_ane')) || [];
-    metasAtuais.push(val);
+    metasAtuais.push({ texto: val, prioridade: 'comum' });
     localStorage.setItem('metas_ane', JSON.stringify(metasAtuais));
 
     input.value = "";
@@ -125,35 +158,6 @@ function criarElementoLista(texto) {
 function removerMeta(texto, botao) {
     botao.parentElement.remove();
     let metasAtuais = JSON.parse(localStorage.getItem('metas_ane')) || [];
-    metasAtuais = metasAtuais.filter(m => m !== texto);
+    metasAtuais = metasAtuais.filter(m => (m.texto || m) !== texto);
     localStorage.setItem('metas_ane', JSON.stringify(metasAtuais));
-}
-
-// --- FOCO / TIMER ---
-function ativarHiperfoco() {
-    const inputMin = document.getElementById('minutos');
-    if(!inputMin || !inputMin.value) return alert("Ane, coloque o tempo!");
-    
-    let tempo = inputMin.value * 60;
-    let total = tempo;
-    
-    clearInterval(intervalo);
-    intervalo = setInterval(() => {
-        tempo--;
-        let m = Math.floor(tempo / 60);
-        let s = tempo % 60;
-        
-        const displayTimer = document.getElementById('timer');
-        if(displayTimer) displayTimer.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        
-        const barraProgresso = document.getElementById('barra-progresso');
-        if(barraProgresso) barraProgresso.style.width = ((total-tempo)/total)*100 + "%";
-
-        if(tempo <= 0) {
-            clearInterval(intervalo);
-            moedas += 10;
-            atualizarDisplay();
-            alert("Parabéns Ane! +10 moedas.");
-        }
-    }, 1000);
 }
