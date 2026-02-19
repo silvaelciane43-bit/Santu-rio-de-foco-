@@ -83,8 +83,12 @@ function atualizarDisplay() {
 }
 
 function atualizarStatusHome() {
-    const barra = document.getElementById('energia-fill');
     const corpo = document.getElementById('camada-corpo');
+    if (!corpo) return;
+
+    const agora = new Date();
+    const hora = agora.getHours();
+    const barra = document.getElementById('energia-fill');
     const nivelTexto = document.getElementById('user-nivel');
 
     if(nivelTexto) nivelTexto.innerText = user.nivel;
@@ -93,6 +97,55 @@ function atualizarStatusHome() {
         const nivelEnergia = Math.max(0, Math.min(100, user.energia));
         barra.style.width = nivelEnergia + "%";
     }
+    const missaoAtiva = localStorage.getItem('missao_atual_ane'); // Salvo quando você inicia o foco
+    const energia = parseInt(localStorage.getItem('energia_ane')) || 0;
+
+    // --- 1. SE ESTIVER NO MODO FOCO (Ação Atual) ---
+    if (missaoAtiva) {
+        const missao = missaoAtiva.toLowerCase();
+        
+        if (missao.includes("estudar") || missao.includes("ler")) {
+            corpo.src = "img/estudando.png";
+            return; // Para aqui para não mudar pela hora
+        }
+        if (missao.includes("treinar") || missao.includes("academia") || missao.includes("exercicio")) {
+            corpo.src = "img/academia.png";
+            return;
+        }
+        if (missao.includes("arrumar casa") || missao.includes("lavar louça") || missao.includes("dança")) {
+            corpo.src = "img/arrumando-casa.png";
+            return;
+        }
+        // Se for outra missão genérica
+        corpo.src = "img/alongar.png";
+        return;
+    }
+
+    // --- 2. ROTINA POR HORÁRIO (Se não estiver no foco) ---
+    
+    // 06:00 às 06:59 - Banho/Acordar
+    if (hora === 4) {
+        corpo.src = "img/dentes.png";
+    }
+    else if (hora === 6) {
+        corpo.src = "img/avatar-banho.png";
+    }
+    else if (hora ===7) {
+        corpo.src = "img/cafe.png";
+
+    } 
+    else if (hora === 9) {
+        corpo.src = "img/comer.png";
+    }
+    // 12:00 às 13:00 - Almoço
+    else if (hora === 12) {
+        corpo.src = "img/almocando.png";
+    }
+    // 22:00 em diante - Pijama
+    else if (hora >= 22 || hora < 5) {
+        corpo.src = "img/dormir.png";
+    }
+
 
     if (corpo) {
     // 1. A prioridade máxima é a falta de energia (independente do nível)
