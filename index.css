@@ -1,0 +1,142 @@
+/* --- ESTILOS EXCLUSIVOS DA PÁGINA PRINCIPAL --- */
+
+/* 1. Header e Status */
+#saudacao {
+    font-weight: 800;
+    background: linear-gradient(90deg, #fff, #4ae3b5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+.status-topo {
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* 2. Avatar Animado (Efeito de Flutuar para TDAH não se entediar) */
+.container-avatar {
+    perspective: 1000px;
+}
+
+.img-avatar {
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+    animation: flutuar 4s ease-in-out infinite;
+}
+
+@keyframes flutuar {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+/* 3. Card de Frases (Foco e Clareza) */
+.balao-frase.fogo-glow {
+    border: 2px solid #4ae3b5; /* Cor de Foco */
+    background: rgba(74, 227, 181, 0.1);
+    box-shadow: 0 0 20px rgba(74, 227, 181, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.balao-frase.fogo-glow::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(74, 227, 181, 0.1) 0%, transparent 70%);
+    animation: girar-brilho 6s linear infinite;
+}
+
+@keyframes girar-brilho {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 4. Calendário e Progresso */
+.grid-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.dia-calendario {
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 0.85rem;
+    position: relative;
+}
+
+.dia-calendario:hover {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #4ae3b5;
+}
+
+/* Dia Atual com destaque pulsante */
+.dia-atual {
+    background: rgba(74, 227, 181, 0.2) !important;
+    border: 2px solid #4ae3b5 !important;
+    color: #4ae3b5;
+    font-weight: 800;
+    box-shadow: 0 0 10px rgba(74, 227, 181, 0.5);
+    animation: pulsar-foco 2s infinite;
+}
+
+@keyframes pulsar-foco {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(74, 227, 181, 0.8); }
+    100% { transform: scale(1); }
+}
+
+/* O X Dourado de Conclusão */
+.dia-concluido {
+    background: rgba(255, 215, 0, 0.1) !important;
+    border: 1px solid #ffd700 !important;
+}
+
+.x-dourado {
+    position: absolute;
+    color: #ffd700;
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+    animation: aparecer-x 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes aparecer-x {
+    from { transform: scale(0) rotate(-45deg); opacity: 0; }
+    to { transform: scale(1) rotate(-12deg); opacity: 1; }
+}
+
+/* 5. Barra de Energia Dinâmica */
+.fill {
+    box-shadow: 0 0 15px rgba(74, 227, 181, 0.4);
+    position: relative;
+}
+
+.fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: brilho-barra 2s infinite;
+}
+
+@keyframes brilho-barra {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
