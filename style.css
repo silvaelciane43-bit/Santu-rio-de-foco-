@@ -1,13 +1,101 @@
-:root
-{
-    margin: 0%;
-    background-color: aqua;
-    text-align: center;
-    box-sizing: border-box;
-    font-family: 'poppins', sans-serif;
-    fill: #f1c4f1
-    
-   
+/* Definição das cores */
+:root {
+    /* Modo Padrão (Galáxia/Escuro) */
+    --bg-principal: radial-gradient(circle at top right, #1a1a2e, #16213e, #0f3460);
+    --cor-card: rgba(255, 255, 255, 0.1);
+    --cor-texto: #ffffff;
+    --cor-foco: #4ae3b5;
+}
+
+/* Classe que será aplicada para o Modo Candy */
+.modo-candy {
+    --bg-principal: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    --cor-card: rgba(255, 255, 255, 0.7); /* Card mais visível no fundo claro */
+    --cor-texto: #5d5d5d;
+    --cor-foco: #ff6b6b; /* Rosa pastel forte */
+}
+
+/* Aplicando as variáveis no corpo do site */
+body {
+    background: var(--bg-principal) !important;
+    color: var(--cor-texto) !important;
+    transition: all 0.5s ease; /* Transição suave para não dar susto no TDAH */
+}
+
+.card-glass {
+    background: var(--cor-card) !important;
+    color: var(--cor-texto) !important;
+}
+
+/* Ajuste do botão de tema */
+#btn-tema {
+    background: var(--cor-foco);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* --- AJUSTE MODO CANDY (Calendário Visível) --- */
+body.modo-candy {
+    --bg-principal: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --bg-imagem: none; 
+    --cor-card: rgba(255, 255, 255, 0.8); /* Card mais sólido e branco */
+    --cor-texto: #5b4d8d; /* Roxo escuro pastel para leitura perfeita */
+    --cor-foco: #ff6b6b;
+    --cor-borda: rgba(0, 0, 0, 0.1);
+}
+/* Correção da Saudação no Modo Candy */
+body.modo-candy #saudacao {
+    background: none !important; /* Remove o degradê transparente */
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: #5b4d8d !important; /* Mesma cor roxa forte do calendário */
+    font-weight: 800;
+    text-shadow: none;
+}
+
+/* Deixar os ícones e moedas visíveis também */
+body.modo-candy .status-topo span {
+    color: #5b4d8d !important;
+    font-weight: 700;
+}
+
+/* Ajuste na frase do dia para não sumir */
+body.modo-candy #frase-dia {
+    color: #444 !important;
+    text-shadow: none !important;
+}
+
+/* Isso garante que os números do calendário fiquem escuros no Modo Candy */
+body.modo-candy .dia-calendario {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    color: #5b4d8d !important; /* Cor forte para destacar no fundo claro */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 700;
+}
+
+/* Ajuste para o dia atual no Modo Candy */
+body.modo-candy .dia-atual {
+    background-color: #ff6b6b !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
+}
+
+/* Ajuste para o X Dourado no Modo Candy */
+body.modo-candy .x-dourado {
+    color: #ffb800 !important; /* Um dourado mais quente para destacar */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+/* Garante que o fundo mude em todas as páginas */
+body {
+    background: var(--bg-principal);
+    color: var(--cor-texto);
+    transition: 0.5s ease;
 }
 .body {
     margin: 0;

@@ -13,7 +13,33 @@ let user = {
         acessorioEquipado: "nenhum" 
     }
 };
+// Função que troca o tema e salva no banco (localStorage)
+function toggleTema() {
+    const body = document.body;
+    body.classList.toggle('modo-candy');
+    
+    const novoTema = body.classList.contains('modo-candy') ? 'candy' : 'galaxia';
+    localStorage.setItem('tema_preferido', novoTema);
+    
+    // Atualiza o texto de todos os botões de tema que existirem na página
+    const btn = document.getElementById('btn-tema');
+    if(btn) {
+        btn.innerText = novoTema === 'candy' ? "🌌 Modo Galáxia" : "🍭 Modo Candy";
+    }
+}
 
+// Função que aplica o tema assim que a página abre
+function aplicarTemaSalvo() {
+    const tema = localStorage.getItem('tema_preferido');
+    if (tema === 'candy') {
+        document.body.classList.add('modo-candy');
+        const btn = document.getElementById('btn-tema');
+        if(btn) btn.innerText = "🌌 Modo Galáxia";
+    }
+}
+
+// Executa automaticamente em qualquer página que tenha o storage.js
+document.addEventListener('DOMContentLoaded', aplicarTemaSalvo);
 // 2. Função Global para Salvar todos os dados de uma vez
 function salvarDados() {
     localStorage.setItem('moedas_ane', user.moedas);

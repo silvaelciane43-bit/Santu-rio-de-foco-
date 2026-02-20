@@ -45,7 +45,7 @@ function inicializarGrafico() {
 
 function ajustarRoda(area, valor) {
     dadosRoda[area] = parseInt(valor);
-    localStorage.setItem('roda_vida_ane', JSON.stringify(dadosRoda));
+    localStorage.setItem('roda_vida', JSON.stringify(dadosRoda));
     
     // Atualiza o gráfico em tempo real
     graficoRoda.data.datasets[0].data = Object.values(dadosRoda);
@@ -77,8 +77,8 @@ function iniciarFoco() {
     const tempoTermino = agora + (minutos * 60 * 1000);
 
     // Salva o momento exato do fim e a missão
-    localStorage.setItem('timer_fim_ane', tempoTermino);
-    localStorage.setItem('missao_atual_ane', missaoInput.value || "Missão Secreta");
+    localStorage.setItem('timer_fim', tempoTermino);
+    localStorage.setItem('missao_atual', missaoInput.value || "Missão Secreta");
 
     gerenciarTimer();
 }
