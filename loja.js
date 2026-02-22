@@ -1,25 +1,23 @@
+// --- CONFIGURAÇÃO DA LOJA ---
 const ITENS = [
     { id: 'armadura_bronze', nome: 'Peitoral de Bronze', preco: 500, img: 'armadura_bronze.png', nivelMin: 1 },
     { id: 'oculos_foco', nome: 'Óculos de Foco', preco: 30, img: 'oculos_foco.png', nivelMin: 1 },
-    { id: 'espada_luz', nome: 'Espada de Luz', preco: 1200, img: 'espada_luz.png', nivelMin: 2 }, // Exemplo de item para Nível 2
+    { id: 'espada_luz', nome: 'Espada de Luz', preco: 1200, img: 'espada_luz.png', nivelMin: 2 },
 ];
 
-let user = {
-    moedas: parseInt(localStorage.getItem('moedas_ane')) || 0,
-    nivel: parseInt(localStorage.getItem('nivel_ane')) || 1,
-    xp: parseInt(localStorage.getItem('xp_ane')) || 0,
-    loja: JSON.parse(localStorage.getItem('loja_ane')) || { itensComprados: [], itemEquipado: "padrao" }
-};
+// REMOVIDO: A declaração "let user = {...}" foi removida daqui 
+// pois agora ela vem do storage.js automaticamente.
 
 window.onload = () => {
-    // Inicialização básica caso o objeto não exista
-    atualizarInterface();
+    // Inicialização usando as funções do storage.js e da loja
+    atualizarInterfaceLoja();
     renderizarItensLoja();
 };
 
-function atualizarInterface() {
-    // Atualiza Moedas
-    document.getElementById('saldo-moedas').innerText = user.moedas;
+function atualizarInterfaceLoja() {
+    // Atualiza Moedas (usa o saldo do objeto user global)
+    const saldoMoedas = document.getElementById('saldo-moedas');
+    if (saldoMoedas) saldoMoedas.innerText = user.moedas;
     
     // Atualiza Nível e Barra de XP
     const nivelElemento = document.getElementById('nivel-usuario');
@@ -30,10 +28,10 @@ function atualizarInterface() {
     const xpNecessario = user.nivel * 1000;
     const porcentagem = (user.xp / xpNecessario) * 100;
 
-    nivelElemento.innerText = user.nivel;
-    xpTexto.innerText = user.xp;
-    xpProx.innerText = xpNecessario;
-    barraXp.style.width = porcentagem + "%";
+    if (nivelElemento) nivelElemento.innerText = user.nivel;
+    if (xpTexto) xpTexto.innerText = user.xp;
+    if (xpProx) xpProx.innerText = xpNecessario;
+    if (barraXp) barraXp.style.width = porcentagem + "%";
 }
 
 function renderizarItensLoja() {
@@ -65,7 +63,7 @@ function comprarItem(id) {
     const item = ITENS.find(i => i.id === id);
     const alerta = document.getElementById('alerta-loja');
 
-    // 1. Verificação de Saldo
+    // 1. Verificação usando a função global de moedas do storage.js
     if (user.moedas >= item.preco) {
         user.moedas -= item.preco;
         user.loja.itensComprados.push(id);
@@ -74,16 +72,19 @@ function comprarItem(id) {
         if (id.includes('armadura')) user.loja.itemEquipado = id;
         if (id.includes('oculos')) user.loja.acessorioEquipado = id;
         
-        alerta.style.color = "#00ff88";
-        alerta.innerText = `Excelente escolha, Lua! O ${item.nome} já está com o gatinho!`;
+        if (alerta) {
+            alerta.style.color = "#00ff88";
+            alerta.innerText = `Excelente escolha, ${user.nome}! O ${item.nome} já está equipado!`;
+        }
         
-        salvar();
-        atualizarInterface();
+        salvarDados(); // Função do storage.js
+        atualizarInterfaceLoja();
         renderizarItensLoja();
     } else {
-        // 2. Sistema de Saldo Insuficiente (Sua Missão!)
         const faltam = item.preco - user.moedas;
-        alerta.style.color = "#ff4444";
-        alerta.innerText = `Puxa, Lua! Faltam 💰 ${faltam} moedas para o ${item.nome}. Foque um pouco mais para conquistar! 💪`;
+        if (alerta) {
+            alerta.style.color = "#ff4444";
+            alerta.innerText = `Puxa, ${user.nome}! Faltam 💰 ${faltam} moedas para o ${item.nome}. Foque um pouco mais para conquistar! 💪`;
+        }
     }
 }

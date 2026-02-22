@@ -1,4 +1,4 @@
-// 1. LISTA DE FRASES (Sempre no topo)
+// 1. LISTA DE FRASES (Mantida conforme seu código)
 const frasesFoco = [
     "Foco é dizer não a centenas de outras boas ideias.",
     "Onde o foco vai, a energia flui.",
@@ -33,12 +33,12 @@ const frasesFoco = [
     "Mês concluído com sucesso. O foco venceu!"
 ];
 
-// 2. INICIALIZAÇÃO (O que roda ao abrir a página)
+// 2. INICIALIZAÇÃO
 window.addEventListener('load', () => {
-    console.log("Santuário carregado! Iniciando componentes...");
+    console.log("Santuário de " + user.nome + " carregado!");
     inicializarApp();
     
-    // Iniciar loop de atualização (Energia e Status) a cada 2 segundos
+    // Loop de atualização (Energia e Status)
     setInterval(atualizarStatusHome, 2000);
 });
 
@@ -46,11 +46,7 @@ function inicializarApp() {
     atualizarSaudacao();
     gerarFraseDoDia();
     gerarCalendario(); 
-    
-    // Carregar dados extras
-    if (typeof carregarDadosUsuario === "function") carregarDadosUsuario();
-    if (typeof atualizarDisplay === "function") atualizarDisplay();
-    atualizarStatusHome();
+    atualizarDisplay(); // Garante que moedas e nível apareçam logo de cara
     carregarMetasHome();
     carregarAnimais();
 }
@@ -60,9 +56,12 @@ function atualizarSaudacao() {
     const hora = new Date().getHours();
     const saudacaoEl = document.getElementById('saudacao');
     if (saudacaoEl) {
-        if (hora < 12) saudacaoEl.innerText = "Bom dia, Max!";
-        else if (hora < 18) saudacaoEl.innerText = "Boa tarde, Max!";
-        else saudacaoEl.innerText = "Boa noite, Max!";
+        // Agora usa o nome que o usuário digitou!
+        let msg = "";
+        if (hora < 12) msg = `Bom dia, ${user.nome}!`;
+        else if (hora < 18) msg = `Boa tarde, ${user.nome}!`;
+        else msg = `Boa noite, ${user.nome}!`;
+        saudacaoEl.innerText = msg;
     }
 }
 
@@ -70,6 +69,7 @@ function gerarFraseDoDia() {
     const diaDoMes = new Date().getDate();
     const fraseEl = document.getElementById('frase-dia');
     if (fraseEl) {
+        // Usa o dia atual para escolher a frase (índice 0 a 30)
         fraseEl.innerText = `"${frasesFoco[diaDoMes - 1]}"`;
     }
 }
@@ -79,7 +79,7 @@ function gerarCalendario() {
     if (!container) return;
 
     const diaHoje = new Date().getDate();
-    let diasConcluidos = JSON.parse(localStorage.getItem('diasMarcados')) || [];
+    let diasConcluidos = JSON.parse(localStorage.getItem('diasMarcados_ane')) || [];
 
     container.innerHTML = ""; 
 
@@ -104,37 +104,38 @@ function gerarCalendario() {
 }
 
 function marcarDia(numero) {
-    let diasConcluidos = JSON.parse(localStorage.getItem('diasMarcados')) || [];
+    let diasConcluidos = JSON.parse(localStorage.getItem('diasMarcados_ane')) || [];
     if (!diasConcluidos.includes(numero)) {
         diasConcluidos.push(numero);
-        localStorage.setItem('diasMarcados', JSON.stringify(diasConcluidos));
+        localStorage.setItem('diasMarcados_ane', JSON.stringify(diasConcluidos));
+        
+        // Ganha um bônus por marcar o dia!
+        if (typeof ganharXP === "function") ganharXP(50);
+        
         gerarCalendario(); 
     }
 }
 
-// 4. STATUS DO AVATAR E ENERGIA
+// 4. STATUS DO AVATAR E ENERGIA (Lógica de Imagens)
 function atualizarStatusHome() {
-   
     const corpo = document.getElementById('camada-corpo');
     if (!corpo) return;
 
-    const agora = new Date();
-    const hora = agora.getHours();
+    const hora = new Date().getHours();
     const barra = document.getElementById('energia-fill');
     const nivelTexto = document.getElementById('user-nivel');
+    const displayMoedas = document.getElementById('moedas-contagem');
 
-    // Atualiza Nível e Barra de Energia (usando objeto 'user' do storage.js)
-    if(typeof user !== 'undefined') {
-        if(nivelTexto) nivelTexto.innerText = user.nivel;
-        if(barra){
-            const nivelEnergia = Math.max(0, Math.min(100, user.energia));
-            barra.style.width = nivelEnergia + "%";
-        }
+    // Atualiza Interface Básica
+    if (nivelTexto) nivelTexto.innerText = user.nivel;
+    if (displayMoedas) displayMoedas.innerText = user.moedas;
+    if (barra) {
+        barra.style.width = user.energia + "%";
     }
 
     const missaoAtiva = localStorage.getItem('missao_atual_ane');
 
-    // Prioridade 1: Missão Ativa (Foco)
+    // Lógica de Troca de Imagem do Avatar
     if (missaoAtiva) {
         const missao = missaoAtiva.toLowerCase();
         if (missao.includes("estudar") || missao.includes("ler")) { corpo.src = "img/estudando.png"; return; }
@@ -144,30 +145,20 @@ function atualizarStatusHome() {
         return;
     }
 
-    // Prioridade 2: Baixa Energia
-    if (typeof user !== 'undefined' && user.energia <= 10) {
-        corpo.src = "img/imc-baixo-removebg-preview.png";
+    if (user.energia <= 10) {
+        corpo.src = "img/imc-baixo-removebg-preview.png"; 
         return;
     }
 
-    // Prioridade 3: Rotina por Horário
-    if (hora === 4) corpo.src = "img/dentes.png";
+    // Rotina por Horário
+    if (hora >= 22 || hora < 5) corpo.src = "img/dormir.png";
     else if (hora === 6) corpo.src = "img/avatar-banho.png";
     else if (hora === 7) corpo.src = "img/cafe.png";
-    else if (hora === 9) corpo.src = "img/comer.png";
-    else if (hora === 12) corpo.src = "img/almocando.png";
-    else if (hora >= 22 || hora < 5) corpo.src = "img/dormir.png";
-    
-    // Prioridade 4: Estados de Energia (Se nada acima capturou)
-    else if (typeof user !== 'undefined') {
-        if (user.energia >= 90) corpo.src = "img/copo-normal-feliz-removebg-preview (1).png";
-        else if (user.energia >= 60) corpo.src = "img/estudar.png";
-        else if (user.energia >= 30) corpo.src = "img/beba-agua.png";
-        else corpo.src = "img/copo-normal.png";
-    }
+    else if (user.energia >= 90) corpo.src = "img/copo-normal-feliz-removebg-preview (1).png";
+    else corpo.src = "img/copo-normal.png";
 }
 
-// 5. SISTEMA DE METAS E ANIMAIS
+// 5. SISTEMA DE METAS
 function carregarMetasHome() {
     const listaMetas = document.getElementById('lista-metas');
     if (listaMetas) {
@@ -184,7 +175,9 @@ function criarElementoLista(texto) {
     const lista = document.getElementById('lista-metas');
     if(!lista) return;
     const li = document.createElement('li');
-    li.innerHTML = `✨ ${texto} <button onclick="removerMeta('${texto}', this)" style="float:right; background:none; border:none; color:red; cursor:pointer;">✕</button>`;
+    li.style.padding = "8px";
+    li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+    li.innerHTML = `✨ ${texto} <button onclick="removerMeta('${texto}', this)" style="float:right; background:none; border:none; color:#ff4444; cursor:pointer; font-weight:bold;">✕</button>`;
     lista.appendChild(li);
 }
 
@@ -205,5 +198,8 @@ function carregarAnimais() {
 
 function atualizarDisplay() {
     const elMoedas = document.getElementById('moedas-contagem');
-    if(elMoedas && typeof user !== 'undefined') elMoedas.innerText = user.moedas;
+    if(elMoedas) elMoedas.innerText = user.moedas;
+    
+    const elNivel = document.getElementById('user-nivel');
+    if(elNivel) elNivel.innerText = user.nivel;
 }
