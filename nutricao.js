@@ -24,25 +24,29 @@ window.onload = () => {
 };
 
 // --- HIDRATAÇÃO ---
+// --- HIDRATAÇÃO (Agora usando o objeto USER do storage.js) ---
 function salvarPeso() {
     const inputPeso = document.getElementById('input-peso');
-    peso = parseFloat(inputPeso.value);
+    const novoPeso = parseFloat(inputPeso.value);
     
-    if (peso > 0) {
-        localStorage.setItem('user_peso_ane', peso);
+    if (novoPeso > 0) {
+        user.saude.peso = novoPeso;
+        user.saude.meta_agua = (novoPeso * 35) / 1000; // Cálculo automático
+        salvarDados(); // Função do storage.js
         calcularMetaAgua();
         alert("Peso salvo! Meta de hidratação atualizada.");
     }
 }
 
-function calcularMetaAgua() {
-    // Cálculo padrão: 35ml por quilo
-    const meta = Math.round(peso * 35);
-    document.getElementById('agua-meta').innerText = meta;
-    document.getElementById('meta-agua-texto').innerText = `Sua meta ideal é ${meta}ml por dia.`;
+function adicionarAgua(ml) {
+    // Em vez de variável solta, usamos o storage
+    let aguaHoje = parseInt(localStorage.getItem('agua_hoje_ane')) || 0;
+    aguaHoje += ml;
+    localStorage.setItem('agua_hoje_ane', aguaHoje);
+    
+    ganharXP(5); // Você já ganha XP por beber água!
     atualizarInterfaceAgua();
 }
-
 function adicionarAgua(quantidade) {
     if (peso === 0) return alert("Defina seu peso primeiro!");
     

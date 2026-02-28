@@ -140,3 +140,117 @@
     from { transform: translateX(-100%); }
     to { transform: translateX(100%); }
 }
+.balao-fala {
+    position: relative;
+    background: white; /* Cor de fundo */
+    border-radius: 20px;
+    padding: 15px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 300px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: 3px solid #4ae3b5;
+    z-index: 100; /* Garante que fica na frente de tudo */
+}
+
+/* A setinha do balão */
+.balao-fala::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 15px 15px 0;
+    border-style: solid;
+    border-color: #4ae3b5 transparent;
+}
+.container-central-avatar {
+    display: flex;         /* Coloca os filhos em linha */
+    flex-direction: row;   /* Garante que é lado a lado */
+    align-items: flex-end; /* Alinha a base da barra com a base do avatar */
+    justify-content: center;
+    gap: 15px;             /* Espaço entre a barra e o gatinho/avatar */
+    margin: 30px 0;
+    width: 100%;
+}
+
+.barra-vitalidade-vertical {
+    width: 20px;           /* Mais fininha para telemóvel */
+    height: 180px;         /* Altura da barra */
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid #4ae3b5;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse; /* Preenche de baixo para cima */
+    overflow: hidden;
+    margin-bottom: 10px;    /* Ajuste fino de altura */
+}
+
+.fill-vertical {
+    width: 100%;
+    height: 100%; /* O JS vai controlar isto */
+    background: linear-gradient(0deg, #2ecc71, #4ae3b5);
+    box-shadow: 0 0 10px #4ae3b5;
+    transition: height 0.8s ease-in-out;
+}
+
+.rotulo-hp {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 900;
+    color: #4ae3b5;
+}
+
+/* Ajuste para o Avatar não ficar gigante no telemóvel */
+.avatar-camadas {
+    width: 180px; 
+}
+.img-avatar {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente (se necessário) */
+    width: 100%;}
+
+.regua-imc {
+    height: 180px;
+    position: relative;
+    width: 30px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+}
+
+.marca-imc {
+    position: absolute;
+    right: 5px;
+    transform: translateY(50%);
+}
+
+.ponteiro {
+    position: absolute;
+    right: -15px; /* Fica apontando para a barra */
+    color: rgb(125, 244, 206);
+    font-size: 12px;
+    transition: bottom 1s ease-in-out;
+    text-shadow: 0 0 5px #000;
+}
+
+/* Força a cor vermelha quando a classe de perigo estiver ativa */
+.barra-perigo .fill-vertical {
+    background: linear-gradient(0deg, #ff1a1a, #ff4d4d) !important;
+    box-shadow: 0 0 20px #ff1a1a !important;
+}
+@keyframes tremer {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(1px); }
+    50% { transform: translateX(-1px); }
+    75% { transform: translateX(1px); }
+    100% { transform: translateX(0); }
+}

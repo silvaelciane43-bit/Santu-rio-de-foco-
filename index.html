@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <div class="theme-switch">
-    <button onclick="toggleTema()" id="btn-tema">🍭 Modo Candy</button>´
-    <button onclick="sincronizarDadosPython()" class="btn-sync">
-    🔄 Sincronizar com o Cérebro Python
-</button>
-</div>
+ <div class="theme-switch">
+    <button onclick="toggleTema()" id="btn-tema">🍭 Modo Candy</button>
+    <button onclick="abrirConfiguracoes()" class="btn-config">⚙️</button>
+ </div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Santuário Max - Home</title>
@@ -14,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body class="modo-galaxia">
+
 
     <main class="app-container">
         <header class="card-glass" style="text-align: center;">
@@ -30,8 +29,23 @@
                 </div>
             </div>
         </header>
+  <section class="container-central-avatar">
+            <div class="regua-imc">
+                <span class="marca-imc" style="bottom: 85%;">30+</span> 
+                <span class="marca-imc" style="bottom: 60%;">25</span>  
+                <span class="marca-imc" style="bottom: 40%;">18</span>  
+                <span class="marca-imc" style="bottom: 10%;">15</span>  
+            </div>
 
-        <section class="container-avatar">
+            <div class="barra-vitalidade-vertical" id="barra-corpo">
+                <div id="energia-fill-vertical" class="fill-vertical"></div>
+                <div id="ponteiro-imc" class="ponteiro">◀</div>
+            </div>
+
+            <div class="avatar-e-fala">
+                <div id="avatar-speech" class="balao-fala" style="display: none;">
+                    <p id="texto-fala"></p>
+                </div>
             <div class="avatar-camadas">
                 <img src="img/copo-normal.png" id="camada-corpo" class="img-avatar">
                 <img src="" id="camada-roupa" class="img-avatar" style="display: none; z-index: 2;">
